@@ -6,7 +6,7 @@ BUILD_DIR := build
 
 CC := cc
 CC_FLAGS := -MMD -MP -std=c99 -Wall -Wextra -O3 -I ./$(INC_DIR)# -save-temps=obj
-LD_FLAGS :=
+LD_FLAGS := -lm
 
 SOURCE_EXTENSION := .c
 
