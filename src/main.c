@@ -1,39 +1,68 @@
 #include "calc.h"
 #include "ui.h"
-#include "color.h"
 #include "file_utils.h"
+#include "ppm.h"
 
-#define START_COLOR_VAL 0
-#define MAX_COLOR_VAL 255
-#define ASPECT_RATIO (16 / 9.0)
-#define IMAGE_H 360
-#define IMAGE_W ((int) (IMAGE_H * ASPECT_RATIO))
+#define VIEWPORT_H 2.0
+#define VIEWPORT_W (VIEWPORT_H * IMAGE_W / IMAGE_H)
 
 int main(void) {
     FILE *ppm_image;
-    fopen_safe(&ppm_image, "build/image.ppm", "w");
+    fopen_safe(&ppm_image, IMAGE_NAME, "wb");
 
     setvbuf(ppm_image, NULL, _IOFBF, 1 << 16); // 64 KiB
 
-    fprintf(ppm_image, "P6\n%d %d\n%d\n", IMAGE_W, IMAGE_H, MAX_COLOR_VAL); // header
-    // int i, j;
+    ppm_write_header(ppm_image);
+
+    double focal_length = 1.0;
+    Vec3 camera_center = {0, 0, 0};
+    Vec3 viewport_u = {VIEWPORT_W, 0, 0};
+    Vec3 viewport_v = {0, -VIEWPORT_H, 0};
+    Vec3 pixel_delta_u = vec3_div_n(viewport_u, IMAGE_W);
+    Vec3 pixel_delta_v = vec3_div_n(viewport_v, IMAGE_H);
+    // viewport_upper_left = camera_center - viewport_u / 2 + viewport_v / 2 - (Vec3) {0, 0, focal_length}
+    Vec3 viewport_upper_left = vec3_sub(
+        vec3_add(
+            vec3_sub(
+                camera_center,
+                vec3_div_n(viewport_u, 2)
+            ),
+            vec3_div_n(viewport_v, 2)
+        ),
+        (Vec3) {0, 0, focal_length}
+    );
+    // pixel_upper_left = viewport_upper_left + (pixel_delta_u + pixel_delta_v) / 2
+    Vec3 pixel_upper_left = vec3_add(
+        viewport_upper_left,
+        vec3_div_n(
+            vec3_add(pixel_delta_u, pixel_delta_v),
+            2
+        )
+    );
+
     for (int i = START_COLOR_VAL; i < IMAGE_H; i++) {
-        // int shift = abs_ceil((MAX_COLOR_VAL - START_COLOR_VAL + 1) / IMAGE_H);
         indicate_progress_percent(i, IMAGE_H - START_COLOR_VAL);
-        // printf("r: %d ", map(i, 0, IMAGE_H, START_COLOR_VAL, MAX_COLOR_VAL));
+
         for (int j = START_COLOR_VAL; j < IMAGE_W; j++) {
-            // printf("g: %d\n", map(j, 0, IMAGE_W, START_COLOR_VAL, MAX_COLOR_VAL));
-            ColorRGB color = {
-                map(i, 0, IMAGE_H - 1, START_COLOR_VAL, MAX_COLOR_VAL),
-                map(j, 0, IMAGE_W - 1, START_COLOR_VAL, MAX_COLOR_VAL),
-                0
-            };
-            color_write(&color, ppm_image);
+            // pixel = pixel_upper_left + pixel_delta_u * j + pixel_delta_v * i
+            Vec3 pixel = vec3_add(
+                vec3_add(
+                    pixel_upper_left,
+                    vec3_mult_n(pixel_delta_u, j)
+                ), vec3_mult_n(pixel_delta_v, i)
+            );
+            ColorRGB color = get_pixel_color_circle(pixel, vec3_add(
+                vec3_add(
+                    pixel_upper_left,
+                    vec3_mult_n(pixel_delta_u, 2 * IMAGE_W / 3)
+                ), vec3_mult_n(pixel_delta_v, 2 * IMAGE_H / 5)
+            ));
+            ppm_write_color(&color, ppm_image);
         }
     }
-    // printf("r: %d ", map(i, 0, IMAGE_H, START_COLOR_VAL, MAX_COLOR_VAL));
-    // printf("g: %d\n", map(j, 0, IMAGE_W, START_COLOR_VAL, MAX_COLOR_VAL));
+
     printf("Done!\n");
+
     fclose(ppm_image);
     
     return 0;

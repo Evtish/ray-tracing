@@ -1,12 +1,10 @@
 PROGRAM_NAME := main
+IMAGE_NAME := image.ppm
 
 SRC_DIR := src
 INC_DIR := inc
 BUILD_DIR := build
-
-CC := cc
-CC_FLAGS := -MMD -MP -std=c99 -Wall -Wextra -O3 -I ./$(INC_DIR)# -save-temps=obj
-LD_FLAGS := -lm
+IMAGE_DIR := images
 
 SOURCE_EXTENSION := .c
 
@@ -14,32 +12,41 @@ SOURCE_FILES := $(wildcard $(SRC_DIR)/*$(SOURCE_EXTENSION))
 OBJECT_FILES := $(patsubst $(SRC_DIR)/%$(SOURCE_EXTENSION),$(BUILD_DIR)/%.o,$(SOURCE_FILES))
 DEPENDENCY_FILES := $(OBJECT_FILES:.o=.d)
 EXEC_FILE := $(BUILD_DIR)/$(PROGRAM_NAME)
+IMAGE_FILE := $(IMAGE_DIR)/$(IMAGE_NAME)
 
-all: $(EXEC_FILE)
+CC := cc
+CFLAGS := -MMD -MP -std=c99 -Wall -Wextra -O3 -I ./$(INC_DIR) -DIMAGE_NAME=\"$(IMAGE_FILE)\"
+LDFLAGS := -lm
 
-# create a build directory
-$(BUILD_DIR):
-	mkdir -pv $(BUILD_DIR)
+IMAGE_VIEWER := gwenview
+
+all: $(IMAGE_FILE)
+
+$(BUILD_DIR) $(IMAGE_DIR):
+	mkdir -pv $@
 
 # check if the build directory exists
 $(OBJECT_FILES): | $(BUILD_DIR)
 
 # compile
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%$(SOURCE_EXTENSION)
-	$(CC) -c $(CC_FLAGS) $< -o $@
+	$(CC) -c $(CFLAGS) $< -o $@
 
 -include $(DEPENDENCY_FILES)
 
 # link
 $(EXEC_FILE): $(OBJECT_FILES)
-	$(CC) $^ $(CC_FLAGS) $(LD_FLAGS) -o $@
+	$(CC) $^ $(LDFLAGS) -o $@
 
-# run an executable
-run:# $(EXEC_FILE)
+# render an image
+$(IMAGE_FILE): $(EXEC_FILE) | $(IMAGE_DIR)
 	./$(EXEC_FILE)
+
+open: $(IMAGE_FILE)
+	$(IMAGE_VIEWER) $(IMAGE_FILE)
 
 # remove build files
 clean:
 	rm -rf $(BUILD_DIR)
 
-.PHONY: all run clean
+.PHONY: all open clean
