@@ -5,5 +5,5 @@ void ppm_write_header(FILE *const image) {
 }
 
 void ppm_write_color(ColorRGB *const p_color, FILE *const image) {
-    fwrite(p_color, sizeof (unsigned char), 3, image);
+    fwrite(p_color, sizeof p_color->r, 3, image);
 }

@@ -1,6 +1,8 @@
 #pragma once
 
-#include "ppm.h"
+#include "vec2.h"
+#include "vec3.h"
+#include "image.h"
 
-#define VIEWPORT_H 2.0
+#define VIEWPORT_H 9.0
 #define VIEWPORT_W (VIEWPORT_H * IMAGE_W / IMAGE_H)
