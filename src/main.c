@@ -1,37 +1,47 @@
 #include <stdio.h>
 
+#define HEADER_SIZE 20
 #define MAX_COLOR_VAL 255
 #define ASPECT_RATIO (16 / 9.0)
 #define IMAGE_H 360
 #define IMAGE_W ((int) (IMAGE_H * ASPECT_RATIO))
 #define PERCENT_STEP 5
 
+#define arr_len(arr) (sizeof (arr) / sizeof (arr)[0])
+
 int main(void) {
     const char *file_name = "build/image.ppm";
-    FILE *image_file = fopen(file_name, "w");
-    if (!image_file) {
+    FILE *ppm_image = fopen(file_name, "w");
+    if (!ppm_image) {
         fprintf(stderr, "Error occured while opening %s\n", file_name);
         return 1;
     }
 
-    setvbuf(image_file, NULL, _IOFBF, 1 << 13); // 8 KiB
+    setvbuf(ppm_image, NULL, _IOFBF, 1 << 14); // 16 KiB
     
-    fprintf(image_file, "P3\n%d %d\n%d\n", IMAGE_W, IMAGE_H, MAX_COLOR_VAL);
+    // char header[HEADER_SIZE];
+    // sprintf(header, "P6 %d %d %d ", IMAGE_W, IMAGE_H, MAX_COLOR_VAL);
+    // for (size_t i = 0; i < HEADER_SIZE * sizeof header[0]; i++)
+    //     putc(header[i], ppm_image);
+    fprintf(ppm_image, "P6\n%d %d\n%d\n", IMAGE_W, IMAGE_H, MAX_COLOR_VAL);
 
     for (int i = 0; i < IMAGE_H; i++) {
         if (i % (IMAGE_H * PERCENT_STEP / 100) == 0)
             printf("%d%%\n", i * 100 / IMAGE_H);
 
         for (int j = 0; j < IMAGE_W; j++) {
-            int r = i * MAX_COLOR_VAL / (double) (IMAGE_H - 1);
-            int g = j * MAX_COLOR_VAL / (double) (IMAGE_W - 1);
-            int b = 0;
+            char color[3] = {
+                i * MAX_COLOR_VAL / (double) (IMAGE_H - 1),
+                j * MAX_COLOR_VAL / (double) (IMAGE_W - 1),
+                0
+            };
 
-            fprintf(image_file, "%d %d %d\n", r, g, b);
+            fwrite(color, sizeof color[0], arr_len(color), ppm_image);
+            // fprintf(ppm_image, "%d %d %d\n", r, g, b);
         }
     }
     printf("Done!\n");
-    fclose(image_file);
+    fclose(ppm_image);
     
     return 0;
 }
