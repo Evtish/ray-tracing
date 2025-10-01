@@ -1,5 +1,7 @@
 #include "viewport.h"
 
+Vec3 camera_center = {0, 0, 0};
+
 // Vec2 viewport_get_pixel(Vec3 u) {
 //     Vec3 camera_center = {0, 0, 0};
 //     const double focal_length = 1.0;

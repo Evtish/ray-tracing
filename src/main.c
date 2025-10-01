@@ -12,9 +12,6 @@ int main(void) {
 
     ppm_write_header(ppm_image);
 
-    Vec3 camera_center = {0, 0, 0};
-    const double focal_length = 1.0;
-
     const Vec3 viewport_u = vec3_add(camera_center, (Vec3) {VIEWPORT_W, 0, 0});
     const Vec3 viewport_v = vec3_add(camera_center, (Vec3) {0, -VIEWPORT_H, 0});
     const Vec3 pixel_delta_u = vec3_div_n(viewport_u, IMAGE_W);
@@ -29,7 +26,7 @@ int main(void) {
             ),
             vec3_div_n(viewport_v, 2)
         ),
-        (Vec3) {0, 0, focal_length}
+        (Vec3) {0, 0, FOCAL_LENGTH}
     );
     // pixel_upper_left = viewport_upper_left + (pixel_delta_u + pixel_delta_v) / 2
     Vec3 pixel_upper_left = vec3_add(
@@ -54,6 +51,7 @@ int main(void) {
                 ), vec3_mult_n(pixel_delta_v, j)
             );
             ColorRGB color = get_pixel_color(pixel);
+            // ColorRGB color = get_pixel_color_circle(pixel, pixel_upper_left);
             ppm_write_color(&color, ppm_image);
         }
     }
