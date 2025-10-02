@@ -15,7 +15,7 @@ EXEC_FILE := $(BUILD_DIR)/$(PROGRAM_NAME)
 IMAGE_FILE := $(IMAGE_DIR)/$(IMAGE_NAME)
 
 CC := cc
-CFLAGS := -MMD -MP -std=c99 -Wall -Wextra -O3 -I ./$(INC_DIR) -DIMAGE_NAME=\"$(IMAGE_FILE)\"
+CFLAGS := -MMD -MP -std=c99 -pedantic -Wall -Wextra -O3 -I ./$(INC_DIR) -DIMAGE_NAME=\"$(IMAGE_FILE)\"
 LDFLAGS := -lm
 
 IMAGE_VIEWER := xdg-open

@@ -5,3 +5,6 @@
 ```make open```
 
 Or open the rendered file manually from the `images` directory (it will be created after running `make`).
+
+# Remove build
+```make clean```
