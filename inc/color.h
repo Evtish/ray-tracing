@@ -4,6 +4,7 @@
 #include <math.h>
 
 #include "vec3.h"
+#include "ray.h"
 // #include "ppm.h"
 #include "viewport.h"
 #include "intersection.h"

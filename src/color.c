@@ -19,9 +19,17 @@ ColorRGB color_mult_n(const ColorRGB u, const double n) { return (ColorRGB) {u.r
 
 ColorRGB get_pixel_color(const Vec3 pixel) {
     Vec3 sphere_center = {0, 0, -1};
-    double sphere_radius = 0.9;
-    if (hit_sphere(sphere_center, sphere_radius, pixel))
-        return (ColorRGB) {0, 255, 127};
+    double sphere_radius = 0.5;
+    double hit = hit_sphere(sphere_center, sphere_radius, pixel);
+    if (hit > 0) {
+        Vec3 hit_ray = get_ray(camera_center, pixel, hit);
+        Vec3 normal = vec3_normalize(vec3_sub(hit_ray, sphere_center));
+        return (ColorRGB) {
+            fmap(normal.x, -1, 1, 0, MAX_COLOR_VAL),
+            fmap(normal.y, -1, 1, 0, MAX_COLOR_VAL),
+            fmap(normal.z, -1, 1, 0, MAX_COLOR_VAL)
+        };
+    }
 
     double blend_k = fmap(pixel.y, -VIEWPORT_H / 2, VIEWPORT_H / 2, 0, 1);
     ColorRGB color_a = {255, 255, 255}, color_b = {0, 170, 255}; // a - bottom, b - top
