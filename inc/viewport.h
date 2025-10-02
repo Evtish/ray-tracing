@@ -1,7 +1,8 @@
 #pragma once
 
-// #include "vec2.h"
+#include "vec2.h"
 #include "vec3.h"
+#include "ray.h"
 #include "image.h"
 
 #define VIEWPORT_H 2.0
@@ -9,3 +10,5 @@
 #define FOCAL_LENGTH 1.0
 
 extern Vec3 camera_center;
+
+Vec3 viewport_get_vector_from_pixel(Vec2 u);
