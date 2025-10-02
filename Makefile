@@ -18,7 +18,7 @@ CC := cc
 CFLAGS := -MMD -MP -std=c99 -Wall -Wextra -O3 -I ./$(INC_DIR) -DIMAGE_NAME=\"$(IMAGE_FILE)\"
 LDFLAGS := -lm
 
-IMAGE_VIEWER := gwenview
+IMAGE_VIEWER := xdg-open
 
 all: $(IMAGE_FILE)
 
