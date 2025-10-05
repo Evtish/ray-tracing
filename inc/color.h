@@ -14,5 +14,4 @@ typedef struct {
     unsigned char b;
 } ColorRGB;
 
-// ColorRGB get_ray_color_circle(const Vec3 point, const Vec3 circle_center);
 ColorRGB get_point_color(const Vec3 point);
