@@ -3,7 +3,7 @@
 Hittable scene[] = {
     {
         .type = SPHERE,
-        .data.sphere.center = {0.0, 0, -1},
+        .data.sphere.center = {0, 0, -1},
         .data.sphere.radius = 0.5
     },
     {

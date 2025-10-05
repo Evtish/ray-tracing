@@ -1,7 +1,5 @@
-#include "ui.h"
 #include "file_utils.h"
-#include "ppm.h"
-#include "viewport.h"
+#include "image.h"
 
 int main(void) {
     FILE *ppm_image;
@@ -9,20 +7,9 @@ int main(void) {
 
     setvbuf(ppm_image, NULL, _IOFBF, 1 << 16); // 64 KiB
 
-    ppm_write_header(ppm_image);
-
-    unsigned int j = 0;
-    for (; j < IMAGE_H; j++) {
-        indicate_progress_percent(j, IMAGE_H);
-
-        for (unsigned int i = 0; i < IMAGE_W; i++) {
-            Vec3 point = viewport_get_point_from_pixel((Vec2) {i, j});
-            ColorRGB color = get_point_color(point);
-            ppm_write_color(&color, ppm_image);
-        }
-    }
-    indicate_progress_percent(j, IMAGE_H);
-
+    image_write_header(ppm_image);
+    image_render(ppm_image);
+    
     fclose(ppm_image);
     
     return 0;

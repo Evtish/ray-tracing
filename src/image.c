@@ -1,0 +1,22 @@
+#include "image.h"
+
+void image_write_color(ColorRGB *const p_color, FILE *const image) {
+    fwrite(p_color, sizeof p_color->r, 3, image);
+}
+
+void image_write_header(FILE *const image) {
+    fprintf(image, "P6\n%d %d\n%d\n", IMAGE_W, IMAGE_H, MAX_COLOR_VAL);
+}
+
+void image_render(FILE *const image) {
+    unsigned int j = 0;
+    for (; j < IMAGE_H; j++) {
+        indicate_progress_percent(j, IMAGE_H);
+        for (unsigned int i = 0; i < IMAGE_W; i++) {
+            Vec3 point = viewport_get_point_from_pixel((Vec2) {i, j});
+            ColorRGB color = get_point_color(point);
+            image_write_color(&color, image);
+        }
+    }
+    indicate_progress_percent(j, IMAGE_H);
+}
