@@ -5,9 +5,9 @@
 
 #include "vec3.h"
 #include "ray.h"
-// #include "ppm.h"
 #include "viewport.h"
 #include "intersection.h"
+#include "scene.h"
 
 #define START_COLOR_VAL 0
 #define MAX_COLOR_VAL 255
