@@ -2,7 +2,8 @@
 
 Vec3 camera_center = {0, 0, 0};
 
-Vec3 viewport_get_vector_from_pixel(Vec2 u) {
+// get a point in 3D space from a viewport pixel
+Vec3 viewport_get_point_from_pixel(Vec2 u) {
     const Vec3 viewport_u = vec3_add(camera_center, (Vec3) {VIEWPORT_W, 0, 0});
     const Vec3 viewport_v = vec3_add(camera_center, (Vec3) {0, -VIEWPORT_H, 0});
     const Vec3 pixel_delta_u = vec3_div_n(viewport_u, IMAGE_W);

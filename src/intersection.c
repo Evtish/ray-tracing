@@ -1,9 +1,5 @@
 #include "intersection.h"
 
-Vec3 get_ray(const Vec3 start, const Vec3 dir, const double n) {
-    return vec3_add(start, vec3_mult_n(dir, n));
-}
-
 Vec3 get_normal(const Vec3 ray, const Vec3 hittable_center) {
     Vec3 outside_normal = vec3_normalize(vec3_sub(ray, hittable_center));
     Vec3 normal = outside_normal;

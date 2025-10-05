@@ -8,12 +8,6 @@ typedef struct {
     double z;
 } Vec3;
 
-typedef struct {
-    int x;
-    int y;
-    int z;
-} DVec3;
-
 double vec3_len(const Vec3 u);
 double vec3_dot(const Vec3 u, const Vec3 v);
 
@@ -23,6 +17,3 @@ Vec3 vec3_add(const Vec3 u, const Vec3 v);
 Vec3 vec3_sub(const Vec3 u, const Vec3 v);
 Vec3 vec3_mult_n(const Vec3 u, const double n);
 Vec3 vec3_div_n(const Vec3 u, const double n);
-
-DVec3 dvec3_add(const DVec3 u, const DVec3 v);
-DVec3 dvec3_mult_n(const DVec3 u, const double n);

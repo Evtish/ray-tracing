@@ -1,8 +1,5 @@
 #pragma once
 
-#include <stdio.h>
-#include <math.h>
-
 #include "vec3.h"
 #include "viewport.h"
 #include "intersection.h"
