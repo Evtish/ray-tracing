@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdbool.h>
 #include <math.h>
 
 double flimit(const double val, const double low, const double high);
@@ -11,3 +12,4 @@ double fmap(
     const double out_max
 );
 double prevent_zero_div(const double a, const double b, const double default_val);
+bool finterval_surrounds(const double val, const double a, const double b);

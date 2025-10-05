@@ -33,3 +33,7 @@ double prevent_zero_div(const double a, const double b, const double default_val
     else
         return a / b;
 }
+
+bool finterval_surrounds(const double val, const double a, const double b) {
+    return a < val && val < b;
+}

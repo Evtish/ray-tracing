@@ -43,9 +43,9 @@ HitData get_min_hit_data(const Vec3 point) {
     for (int i = 0; i < AMOUNT_OF_HITTABLES; i++) {
         Hittable hittable = scene[i];
         double hit = hit_hittable(point, hittable);
-        if (hit > 0) {
+        if (hit > 0) { // if there is a hit
             Vec3 hit_ray = get_ray(camera_center, point, hit);
-            if (vec3_len(hit_ray) < vec3_len(min_hit_ray) && vec3_len(hit_ray) > MIN_HIT_DIST) {
+            if (finterval_surrounds(vec3_len(hit_ray), MIN_HIT_DIST, vec3_len(min_hit_ray))) {
                 min_hit_ray = hit_ray;
                 min_hittable_idx = i;
             }
