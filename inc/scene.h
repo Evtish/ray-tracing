@@ -2,6 +2,6 @@
 
 #include "hitable.h"
 
-#define AMOUNT_OF_FIGURES 2
+#define AMOUNT_OF_HITTABLES 3
 
-extern Figure scene[];
+extern Hittable scene[];

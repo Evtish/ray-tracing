@@ -19,7 +19,7 @@ int main(void) {
 
         for (unsigned int i = 0; i < IMAGE_W; i++) {
             Vec3 pixel_in_3d = viewport_get_vector_from_pixel((Vec2) {i, j});
-            ColorRGB color = get_pixel_color(pixel_in_3d);
+            ColorRGB color = get_point_color(pixel_in_3d);
             // ColorRGB color = get_pixel_color_circle(pixel_in_3d, viewport_get_vector_from_pixel((Vec2) {0, 0}));
             ppm_write_color(&color, ppm_image);
         }

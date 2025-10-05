@@ -4,7 +4,6 @@
 #include <math.h>
 
 #include "vec3.h"
-#include "ray.h"
 #include "viewport.h"
 #include "intersection.h"
 #include "scene.h"
@@ -18,5 +17,5 @@ typedef struct {
     unsigned char b;
 } ColorRGB;
 
-// ColorRGB get_pixel_color_circle(const Vec3 pixel, const Vec3 circle_center);
-ColorRGB get_pixel_color(const Vec3 pixel);
+// ColorRGB get_ray_color_circle(const Vec3 point, const Vec3 circle_center);
+ColorRGB get_point_color(const Vec3 point);

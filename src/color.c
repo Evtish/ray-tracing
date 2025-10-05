@@ -4,9 +4,9 @@ ColorRGB color_add(const ColorRGB u, const ColorRGB v) { return (ColorRGB) {u.r 
 
 ColorRGB color_mult_n(const ColorRGB u, const double n) { return (ColorRGB) {u.r * n, u.g * n, u.b * n}; }
 
-// ColorRGB get_pixel_color_circle(const Vec3 pixel, const Vec3 circle_center) {
+// ColorRGB get_point_color_circle(const Vec3 point, const Vec3 circle_center) {
 //     const double circle_radius = 5.0;
-//     double dist = fabs(vec3_len(vec3_sub(pixel, circle_center)));
+//     double dist = fabs(vec3_len(vec3_sub(point, circle_center)));
 //     double blend_k = fmap(dist, 0, circle_radius, 0, 1);
 //     ColorRGB color_a = {0, 170, 255}, color_b = {255, 255, 255}; // a - inside, b - outside
 
@@ -17,32 +17,43 @@ ColorRGB color_mult_n(const ColorRGB u, const double n) { return (ColorRGB) {u.r
 //     );
 // }
 
-ColorRGB get_pixel_color(const Vec3 pixel) {
-    // figures
-    for (size_t i = 0; i < AMOUNT_OF_FIGURES; i++) {
-        Figure figure = scene[i];
-        double hit = hit_figure(pixel, figure);
-        if (hit > 0) {
-            Vec3 hit_ray = get_ray(camera_center, pixel, hit), normal;
-            switch (figure.type) {
-                case SPHERE:
-                    normal = vec3_normalize(vec3_sub(hit_ray, figure.data.sphere.center));
-                    return (ColorRGB) {
-                        fmap(normal.x, -1, 1, 0, MAX_COLOR_VAL),
-                        fmap(normal.y, -1, 1, 0, MAX_COLOR_VAL),
-                        fmap(normal.z, -1, 1, 0, MAX_COLOR_VAL)
-                    };
-                break;
-            }
-        }
+ColorRGB get_hit_data_color(const HitData hit_data) {
+    Hittable hittable = scene[hit_data.hittable_index];
+    Vec3 normal;
+    switch (hittable.type) {
+        case SPHERE:
+            normal = get_normal(hit_data.hit_ray, hittable.data.sphere.center);
+            return (ColorRGB) {
+                fmap(normal.x, -1, 1, 0, MAX_COLOR_VAL),
+                fmap(normal.y, -1, 1, 0, MAX_COLOR_VAL),
+                fmap(normal.z, -1, 1, 0, MAX_COLOR_VAL)
+            };
+        break;
+        default: return (ColorRGB) {0, 0, 0}; break;
     }
+}
+
+ColorRGB fcolor_gradient(
+    const double val,
+    const double min_val,
+    const double max_val,
+    const ColorRGB a,
+    const ColorRGB b
+) {
+    double blend_k = fmap(val, min_val, max_val, 0, 1);
+    return color_add(
+        color_mult_n(a, 1 - blend_k),
+        color_mult_n(b, blend_k)
+    ); // a * (1 - blend_k) + b * blend_k
+}
+
+ColorRGB get_point_color(const Vec3 point) {
+    // hittable objects
+    HitData min_hit_data = get_min_hit_data(point);
+    if (min_hit_data.hittable_index >= 0) // if the ray hit
+        return get_hit_data_color(min_hit_data);
 
     // background
-    double blend_k = fmap(pixel.y, -VIEWPORT_H / 2, VIEWPORT_H / 2, 0, 1);
-    ColorRGB color_a = {255, 255, 255}, color_b = {0, 170, 255}; // a - bottom, b - top
-    // color_a * (1 - blend_k) + color_b * blend_k
-    return color_add(
-        color_mult_n(color_a, 1 - blend_k),
-        color_mult_n(color_b, blend_k)
-    );
+    ColorRGB color_a = {255, 255, 255}, color_b = {0, 170, 255}; // a - bottom of the image, b - top
+    return fcolor_gradient(point.y, -VIEWPORT_H / 2, VIEWPORT_H / 2, color_a, color_b);
 }

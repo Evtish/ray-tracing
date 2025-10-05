@@ -1,18 +1,19 @@
 #include "scene.h"
 
-Figure scene[] = {
+Hittable scene[] = {
     {
         .type = SPHERE,
-        .data.sphere = (Sphere) {
-            (Vec3) {0, 0, -1},
-            0.5
-        }
+        .data.sphere.center = {0.1, 0, -1},
+        .data.sphere.radius = 0.5
     },
     {
         .type = SPHERE,
-        .data.sphere = (Sphere) {
-            (Vec3) {-0.1, 0.5, -1.5},
-            0.5
-        }
+        .data.sphere.center = {-0.1, 0, -1},
+        .data.sphere.radius = 0.5
+    },
+    {
+        .type = SPHERE,
+        .data.sphere.center = {0, -100.5, -1},
+        .data.sphere.radius = 100
     }
 };

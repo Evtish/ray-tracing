@@ -4,8 +4,8 @@
 
 typedef enum {
     SPHERE,
-    CUBE
-} FigureType;
+    // CUBE
+} HittableType;
 
 typedef struct {
     Vec3 center;
@@ -17,12 +17,13 @@ typedef struct {
     double a;
 } Cube;
 
+// TODO: maybe remove the union and use Sphere and Cube directly
 typedef union {
     Sphere sphere;
-    Cube cube;
-} FigureData;
+    // Cube cube;
+} HittableData;
 
 typedef struct {
-    FigureData data;
-    FigureType type;
-} Figure;
+    HittableData data;
+    HittableType type;
+} Hittable;
