@@ -4,7 +4,7 @@
 #include "vec3.h"
 #include "ray.h"
 #include "viewport.h"
-#include "hitable.h"
+#include "hittable.h"
 #include "scene.h"
 
 #define MIN_HIT_DIST 0.01
