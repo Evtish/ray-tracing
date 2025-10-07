@@ -1,5 +1,7 @@
 #include "image.h"
 
+#define MAX_AMOUNT_OF_REFLECTIONS 50
+
 void image_write_color(ColorRGB *const p_color, FILE *const image) {
     fwrite(p_color, sizeof p_color->r, 3, image);
 }
@@ -14,7 +16,7 @@ void image_render(FILE *const image) {
         indicate_progress_percent(j, IMAGE_H);
         for (unsigned int i = 0; i < IMAGE_W; i++) {
             Vec3 point = viewport_get_point_from_pixel((Vec2) {i, j});
-            ColorRGB color = get_point_color(point);
+            ColorRGB color = get_point_color((Ray) {camera_center, point}, MAX_AMOUNT_OF_REFLECTIONS);
             image_write_color(&color, image);
         }
     }

@@ -1,6 +1,14 @@
 #include "intersection.h"
 
-Vec3 get_normal(const Vec3 ray_end, const Vec3 hittable_center) {
+Vec3 get_hittable_normal(const HitData hit_data) {
+    Hittable hittable = scene[hit_data.hittable_index];
+    Vec3 ray_end = hit_data.hit_ray.end, hittable_center;
+    switch (hittable.hittable_type) {
+        case SPHERE:
+            hittable_center = hittable.sphere.center;
+        // default: return (Vec3) {0, 0, 0};
+    }
+
     Vec3 outside_normal = vec3_normalize(vec3_sub(ray_end, hittable_center));
     Vec3 normal = outside_normal;
     if (vec3_dot(outside_normal, ray_end) > 0) // if the end of the ray is inside the hittable

@@ -7,13 +7,13 @@
 #include "hittable.h"
 #include "scene.h"
 
-#define MIN_HIT_DIST 0.01
-#define MAX_HIT_DIST 1000
+#define MIN_HIT_DIST 1e-6
+#define MAX_HIT_DIST 1e100
 
 typedef struct {
     Ray hit_ray;
     int hittable_index;
 } HitData;
 
-Vec3 get_normal(const Vec3 ray_end, const Vec3 hittable_center);
+Vec3 get_hittable_normal(const HitData hit_data);
 HitData get_min_hit_data(const Ray ray);

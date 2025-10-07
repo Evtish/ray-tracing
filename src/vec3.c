@@ -1,19 +1,13 @@
 #include "vec3.h"
 
-double vec3_len(const Vec3 u) { return sqrt(u.x * u.x + u.y * u.y + u.z * u.z); }
+#define vec3_squared_len(u) vec3_dot((u), (u))
 
 double vec3_dot(const Vec3 u, const Vec3 v) { return u.x * v.x + u.y * v.y + u.z * v.z; }
 
+double vec3_len(const Vec3 u) { return sqrt(u.x * u.x + u.y * u.y + u.z * u.z); }
+
 Vec3 vec3_normalize(const Vec3 u) {
     double len = vec3_len(u);
-    return (Vec3) {
-        prevent_zero_div(u.x, len, 0),
-        prevent_zero_div(u.y, len, 0),
-        prevent_zero_div(u.z, len, 0)
-    };
-}
-
-Vec3 vec3_normalize_wo_len(const Vec3 u, const double len) {
     return (Vec3) {
         prevent_zero_div(u.x, len, 0),
         prevent_zero_div(u.y, len, 0),
@@ -31,12 +25,12 @@ Vec3 vec3_div_n(const Vec3 u, const double n) { return (Vec3) {u.x / n, u.y / n,
 
 Vec3 vec3_rand_unit(void) {
     Vec3 u;
-    double u_len;
+    double u_squared_len;
     do {
         u = (Vec3) {rand_double(-1, 1), rand_double(-1, 1), rand_double(-1, 1)};
-        u_len = vec3_len(u);
-    } while (FLOATING_POINT_APPROX_ZERO > u_len && u_len > 1);
-    return vec3_normalize_wo_len(u, u_len);
+        u_squared_len = vec3_squared_len(u);
+    } while (FLOATING_POINT_APPROX_ZERO > u_squared_len || u_squared_len > 1);
+    return vec3_normalize(u);
 }
 
 Vec3 vec3_rand_unit_hemisphere(const Vec3 normal) {

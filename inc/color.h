@@ -14,4 +14,4 @@ typedef struct {
     unsigned char b;
 } ColorRGB;
 
-ColorRGB get_point_color(const Vec3 point);
+ColorRGB get_point_color(const Ray ray, const int amount_of_reflections);
