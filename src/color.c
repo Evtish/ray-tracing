@@ -38,17 +38,17 @@ ColorRGB fcolor_gradient(
 }
 
 ColorRGB get_point_color(const Ray ray, const int amount_of_reflections) {
-    if (amount_of_reflections <= 0)
+    if (amount_of_reflections < 0)
         return (ColorRGB) {0, 0, 0};
 
     HitData hit_data = get_min_hit_data(ray);
     if (hit_data.hittable_index >= 0) {
         Vec3 normal = get_hittable_normal(hit_data);
-        Ray new_ray = {hit_data.hit_ray.end, vec3_rand_unit_hemisphere(normal)};
+        Ray new_ray = {hit_data.hit_ray.end, vec3_add(hit_data.hit_ray.end, vec3_add(normal, vec3_rand_unit()))};
         return color_mult_n(get_point_color(new_ray, amount_of_reflections - 1), 0.5);
     }
     else {
-        ColorRGB color_a = {255, 255, 255}, color_b = {0, 170, 255}; // a - bottom of the image, b - top
-        return fcolor_gradient(ray.end.y, -VIEWPORT_H / 2, VIEWPORT_H / 2, color_a, color_b);
+        ColorRGB color_a = {255, 255, 255}, color_b = {0, 0, 0}; // a - bottom of the image, b - top
+        return fcolor_gradient(ray.end.x, -VIEWPORT_W / 2, VIEWPORT_W / 2, color_a, color_b);
     }
 }

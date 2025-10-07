@@ -36,6 +36,10 @@ bool finterval_surrounds(const double val, const double a, const double b) {
     return a < val && val < b;
 }
 
+bool finterval_contains(const double val, const double a, const double b) {
+    return a <= val && val <= b;
+}
+
 // get a random double from a range low -- high
 double rand_double(const double low, const double high) {
     return fmap(rand(), 0, RAND_MAX, low, high);
