@@ -11,9 +11,9 @@
 #define MAX_HIT_DIST 1000
 
 typedef struct {
-    Vec3 hit_ray;
+    Ray hit_ray;
     int hittable_index;
 } HitData;
 
-Vec3 get_normal(const Vec3 ray, const Vec3 hittable_center);
-HitData get_min_hit_data(const Vec3 point);
+Vec3 get_normal(const Vec3 ray_end, const Vec3 hittable_center);
+HitData get_min_hit_data(const Ray ray);

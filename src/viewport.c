@@ -30,8 +30,15 @@ Vec3 viewport_get_point_from_pixel(Vec2 u) {
     );
 
     // pixel = pixel_upper_left + pixel_delta_u * i + pixel_delta_v * j
-    return get_ray(
-        get_ray(pixel_upper_left, pixel_delta_u, u.x),
+    // return vec3_add(
+    //     vec3_add(
+    //         pixel_upper_left,
+    //         vec3_mult_n(pixel_delta_u, u.x)
+    //     ),
+    //     vec3_mult_n(pixel_delta_v, u.y)
+    // );
+    return get_ray_end(
+        get_ray_end(pixel_upper_left, pixel_delta_u, u.x),
         pixel_delta_v, u.y
     );
 }

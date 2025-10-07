@@ -1,7 +1,11 @@
+#include <time.h>
+
 #include "file_utils.h"
 #include "image.h"
 
 int main(void) {
+    srand(time(NULL));
+    
     FILE *ppm_image;
     fopen_safe(&ppm_image, IMAGE_NAME, "wb");
 

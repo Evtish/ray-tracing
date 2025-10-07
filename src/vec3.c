@@ -13,6 +13,14 @@ Vec3 vec3_normalize(const Vec3 u) {
     };
 }
 
+Vec3 vec3_normalize_wo_len(const Vec3 u, const double len) {
+    return (Vec3) {
+        prevent_zero_div(u.x, len, 0),
+        prevent_zero_div(u.y, len, 0),
+        prevent_zero_div(u.z, len, 0)
+    };
+}
+
 Vec3 vec3_add(const Vec3 u, const Vec3 v) { return (Vec3) {u.x + v.x, u.y + v.y, u.z + v.z}; }
 
 Vec3 vec3_sub(const Vec3 u, const Vec3 v) { return (Vec3) {u.x - v.x, u.y - v.y, u.z - v.z}; }
@@ -20,3 +28,20 @@ Vec3 vec3_sub(const Vec3 u, const Vec3 v) { return (Vec3) {u.x - v.x, u.y - v.y,
 Vec3 vec3_mult_n(const Vec3 u, const double n) { return (Vec3) {u.x * n, u.y * n, u.z * n}; }
 
 Vec3 vec3_div_n(const Vec3 u, const double n) { return (Vec3) {u.x / n, u.y / n, u.z / n}; }
+
+Vec3 vec3_rand_unit(void) {
+    Vec3 u;
+    double u_len;
+    do {
+        u = (Vec3) {rand_double(-1, 1), rand_double(-1, 1), rand_double(-1, 1)};
+        u_len = vec3_len(u);
+    } while (FLOATING_POINT_APPROX_ZERO > u_len && u_len > 1);
+    return vec3_normalize_wo_len(u, u_len);
+}
+
+Vec3 vec3_rand_unit_hemisphere(const Vec3 normal) {
+    Vec3 u = vec3_rand_unit();
+    if (vec3_dot(u, normal) < 0) // if u isn't in the same hemisphere as the normal
+        return vec3_mult_n(u, -1);
+    return u;
+}

@@ -1,7 +1,5 @@
 #include "calc.h"
 
-#define FLOATING_POINT_APPROX_ZERO 0.00001
-
 // limit var to a range low -- high
 double flimit(const double val, const double low, const double high) {
     if (val > high)
@@ -36,4 +34,9 @@ double prevent_zero_div(const double a, const double b, const double default_val
 
 bool finterval_surrounds(const double val, const double a, const double b) {
     return a < val && val < b;
+}
+
+// get a random double from a range low -- high
+double rand_double(const double low, const double high) {
+    return fmap(rand(), 0, 1, low, high);
 }
