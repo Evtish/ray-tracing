@@ -39,3 +39,11 @@ Vec3 vec3_sub(const Vec3 u, const Vec3 v) { return (Vec3) {u.x - v.x, u.y - v.y,
 Vec3 vec3_mult_n(const Vec3 u, const double n) { return (Vec3) {u.x * n, u.y * n, u.z * n}; }
 
 Vec3 vec3_div_n(const Vec3 u, const double n) { return (Vec3) {u.x / n, u.y / n, u.z / n}; }
+
+bool vec3_near_zero(const Vec3 u) {
+    return (
+        fabs(u.x) < FLOATING_POINT_APPROX_ZERO &&
+        fabs(u.y) < FLOATING_POINT_APPROX_ZERO &&
+        fabs(u.z) < FLOATING_POINT_APPROX_ZERO
+    );
+}

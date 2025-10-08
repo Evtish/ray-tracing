@@ -6,7 +6,7 @@
 #include "vec3.h"
 #include "viewport.h"
 #include "ui.h"
-#include "color.h"
+#include "point_color.h"
 
 #ifndef IMAGE_NAME
     #define IMAGE_NAME "image.ppm"

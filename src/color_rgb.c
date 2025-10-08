@@ -23,3 +23,19 @@ ColorRGB color_blend(const ColorRGB a, const ColorRGB b, const double k) {
         color_mult_n(b, 1 - k)
     );
 }
+
+void color_correct_gamma(ColorRGB *p_color) {
+    double r = fmap(p_color->r, START_COLOR_VAL, MAX_COLOR_VAL, 0, 1);
+    double g = fmap(p_color->g, START_COLOR_VAL, MAX_COLOR_VAL, 0, 1);
+    double b = fmap(p_color->b, START_COLOR_VAL, MAX_COLOR_VAL, 0, 1);
+
+    double corr_r = correct_gamma(r);
+    double corr_g = correct_gamma(g);
+    double corr_b = correct_gamma(b);
+
+    *p_color = (ColorRGB) {
+        fmap(corr_r, 0, 1, START_COLOR_VAL, MAX_COLOR_VAL),
+        fmap(corr_g, 0, 1, START_COLOR_VAL, MAX_COLOR_VAL),
+        fmap(corr_b, 0, 1, START_COLOR_VAL, MAX_COLOR_VAL)
+    };
+}

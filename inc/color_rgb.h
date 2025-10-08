@@ -14,3 +14,4 @@ typedef struct {
 ColorRGB color_mult_color(const ColorRGB u, const ColorRGB v);
 ColorRGB color_mult_n(const ColorRGB u, const double n);
 ColorRGB color_blend(const ColorRGB a, const ColorRGB b, const double k);
+void color_correct_gamma(ColorRGB *p_color);

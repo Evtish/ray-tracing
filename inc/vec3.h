@@ -19,3 +19,5 @@ Vec3 vec3_add(const Vec3 u, const Vec3 v);
 Vec3 vec3_sub(const Vec3 u, const Vec3 v);
 Vec3 vec3_mult_n(const Vec3 u, const double n);
 Vec3 vec3_div_n(const Vec3 u, const double n);
+
+bool vec3_near_zero(const Vec3 u);

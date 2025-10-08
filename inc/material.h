@@ -2,15 +2,15 @@
 
 #include "color_rgb.h"
 
-#define MATTE(r, g, b) {.reflection_type = DIFFUSE, .albedo = {(r), (g), (b)}}
-#define MIRROR(r, g, b) {.reflection_type = SPECULAR, .albedo = {(r), (g), (b)}}
-
 typedef enum {
-    DIFFUSE,
-    SPECULAR
-} MaterialReflectionType;
+    MATTE,
+    MIRROR
+} MaterialType;
 
 typedef struct {
     ColorRGB albedo;
-    MaterialReflectionType reflection_type;
+    MaterialType type;
 } Material;
+
+bool material_scatter(const MaterialType material_type);
+Vec3 get_reflection_dir(const Vec3 dir, const Vec3 normal, const MaterialType type);
