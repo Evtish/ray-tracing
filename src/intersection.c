@@ -5,7 +5,7 @@
 //     *hit *= vec3_dot(normalized_ray_end, normal);
 // }
 
-Vec3 get_hittable_normal(const HitData hit_data) {
+Vec3 get_hittable_normal(const HitData hit_data, const Vec3 ray_dir) {
     Hittable hittable = scene[hit_data.hittable_index];
     Vec3 hittable_center;
     switch (hittable.hittable_type) {
@@ -16,7 +16,7 @@ Vec3 get_hittable_normal(const HitData hit_data) {
 
     Vec3 outside_normal = vec3_normalize(vec3_sub(hit_data.hit_point, hittable_center));
     Vec3 normal = outside_normal;
-    if (vec3_dot(outside_normal, hit_data.hit_point) > 0) // if the end of the ray is inside the hittable
+    if (vec3_dot(outside_normal, ray_dir) > 0) // if the end of the ray is inside the hittable
         normal = vec3_mult_n(outside_normal, -1);
     return vec3_normalize(normal);
 }
@@ -69,10 +69,13 @@ HitData get_min_hit_data(const Ray ray) {
         }
     }
 
-    Vec3 real_hit_point = get_ray_end(ray, min_hit);
-    // Vec3 normal = get_hittable_normal((HitData) {real_hit_point, min_hittable_idx});
-    // fix_fisheye(&min_hit, ray, normal);
-    
-    // Vec3 fixed_hit_point = get_ray_end(ray, min_hit);
-    return (HitData) {real_hit_point, min_hittable_idx};
+    if (min_hittable_idx >= 0) {
+        Vec3 real_hit_point = get_ray_end(ray, min_hit);
+        // Vec3 normal = get_hittable_normal((HitData) {real_hit_point, min_hittable_idx});
+        // fix_fisheye(&min_hit, ray, normal);
+        
+        // Vec3 fixed_hit_point = get_ray_end(ray, min_hit);
+        return (HitData) {real_hit_point, min_hittable_idx};
+    }
+    return (HitData) {{0, 0, 0}, min_hittable_idx};
 }

@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define FLOATING_POINT_APPROX_ZERO 1e-100
+#define FLOATING_POINT_APPROX_ZERO 1e-50
 
 double flimit(const double val, const double low, const double high);
 double fmap(

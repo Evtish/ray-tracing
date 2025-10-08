@@ -17,5 +17,5 @@ typedef struct {
     int hittable_index;
 } HitData;
 
-Vec3 get_hittable_normal(const HitData hit_data);
+Vec3 get_hittable_normal(const HitData hit_data, const Vec3 ray_dir);
 HitData get_min_hit_data(const Ray ray);
