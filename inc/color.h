@@ -1,18 +1,9 @@
 #pragma once
 
-#include "vec3.h"
 #include "viewport.h"
 #include "intersection.h"
+#include "color_rgb.h"
 #include "scene.h"
 
-#define START_COLOR_VAL 0
-#define MAX_COLOR_VAL 255
-
-typedef struct {
-    unsigned char r;
-    unsigned char g;
-    unsigned char b;
-} ColorRGB;
-
 ColorRGB get_point_color(const Ray ray, const int amount_of_reflections);
-ColorRGB color_correct_gamma(const ColorRGB color);
+void color_correct_gamma(ColorRGB *p_color);

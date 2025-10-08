@@ -1,39 +1,19 @@
 #include "color.h"
 
-#define REFLECTED_COLOR_LOSS_K 0.2
-
-ColorRGB color_add(const ColorRGB u, const ColorRGB v) { return (ColorRGB) {u.r + v.r, u.g + v.g, u.b + v.b}; }
-
-ColorRGB color_mult_n(const ColorRGB u, const double n) { return (ColorRGB) {u.r * n, u.g * n, u.b * n}; }
-
-ColorRGB color_correct_gamma(const ColorRGB color) {
-    double r = fmap(color.r, 0, MAX_COLOR_VAL, 0, 1);
-    double g = fmap(color.g, 0, MAX_COLOR_VAL, 0, 1);
-    double b = fmap(color.b, 0, MAX_COLOR_VAL, 0, 1);
+void color_correct_gamma(ColorRGB *p_color) {
+    double r = fmap(p_color->r, START_COLOR_VAL, MAX_COLOR_VAL, 0, 1);
+    double g = fmap(p_color->g, START_COLOR_VAL, MAX_COLOR_VAL, 0, 1);
+    double b = fmap(p_color->b, START_COLOR_VAL, MAX_COLOR_VAL, 0, 1);
 
     double corr_r = correct_gamma(r);
     double corr_g = correct_gamma(g);
     double corr_b = correct_gamma(b);
 
-    return (ColorRGB) {
-        fmap(corr_r, 0, 1, 0, MAX_COLOR_VAL),
-        fmap(corr_g, 0, 1, 0, MAX_COLOR_VAL),
-        fmap(corr_b, 0, 1, 0, MAX_COLOR_VAL)
+    *p_color = (ColorRGB) {
+        fmap(corr_r, 0, 1, START_COLOR_VAL, MAX_COLOR_VAL),
+        fmap(corr_g, 0, 1, START_COLOR_VAL, MAX_COLOR_VAL),
+        fmap(corr_b, 0, 1, START_COLOR_VAL, MAX_COLOR_VAL)
     };
-}
-
-ColorRGB fcolor_gradient(
-    const double val,
-    const double min_val,
-    const double max_val,
-    const ColorRGB a,
-    const ColorRGB b
-) {
-    double blend_k = fmap(val, min_val, max_val, 0, 1);
-    return color_add(
-        color_mult_n(a, 1 - blend_k),
-        color_mult_n(b, blend_k)
-    ); // a * (1 - blend_k) + b * blend_k
 }
 
 ColorRGB get_point_color(const Ray ray, const int amount_of_reflections) {
@@ -41,15 +21,39 @@ ColorRGB get_point_color(const Ray ray, const int amount_of_reflections) {
         return (ColorRGB) {0, 0, 0};
 
     HitData hit_data = get_min_hit_data(ray);
-    if (hit_data.hittable_index >= 0) {
+    int hittable_idx = hit_data.hittable_index;
+    if (hittable_idx >= 0) {
+        Material material = scene[hittable_idx].material;
         Vec3 normal = get_hittable_normal(hit_data),
         reflected_ray_origin = hit_data.hit_point,
-        reflected_ray_dir = vec3_add(normal, vec3_rand_unit());
+        reflected_ray_dir;
+        switch (material.reflection_type) {
+            default:
+            case DIFFUSE:
+                reflected_ray_dir = vec3_add(normal, vec3_rand_unit());
+            break;
+            case SPECULAR:
+                // reflected_ray_dir = dir - 2 * dot(normal, dir) * normal
+                reflected_ray_dir = vec3_sub(ray.dir, vec3_mult_n(normal, 2 * vec3_dot(normal, ray.dir)));
+                // reflected_ray_dir = vec3_sub(ray.origin, vec3_mult_n(normal, 2 * vec3_dot(normal, ray.origin)));
+                // reflected_ray_dir = vec3_normalize(vec3_add(
+                //     vec3_mult_n(vec3_sub(hit_data.hit_point, ray.origin), 2),
+                //     vec3_mult_n(normal, 2 * vec3_dot(normal, ray.origin))
+                // ));
+            break;
+        }
         Ray reflected_ray = {reflected_ray_origin, reflected_ray_dir};
-        return color_mult_n(get_point_color(reflected_ray, amount_of_reflections - 1), REFLECTED_COLOR_LOSS_K);
+        // return color_blend(
+        //     get_point_color(reflected_ray, amount_of_reflections - 1),
+        //     material.color,
+        //     material.albedo
+        // );
+        return color_mult_color(get_point_color(reflected_ray, amount_of_reflections - 1), material.albedo);
     }
+    
     else {
-        ColorRGB color_a = {255, 255, 255}, color_b = {0, 70, 255}; // a - bottom of the image, b - top
-        return fcolor_gradient(ray.dir.y, -VIEWPORT_H / 2, VIEWPORT_H / 2, color_a, color_b);
+        ColorRGB color_a = {128, 179, 255}, color_b = {255, 255, 255}; // a - top of the image, b - bottom
+        double blend_k = fmap(ray.dir.y, -VIEWPORT_H / 2, VIEWPORT_H / 2, 0, 1);
+        return color_blend(color_a, color_b, blend_k);
     }
 }

@@ -1,5 +1,10 @@
 #include "intersection.h"
 
+// void fix_fisheye(double *hit, const Ray ray, const Vec3 normal) {
+//     Vec3 normalized_ray_end = vec3_normalize(get_ray_end(ray, 1));
+//     *hit *= vec3_dot(normalized_ray_end, normal);
+// }
+
 Vec3 get_hittable_normal(const HitData hit_data) {
     Hittable hittable = scene[hit_data.hittable_index];
     Vec3 hittable_center;
@@ -13,7 +18,7 @@ Vec3 get_hittable_normal(const HitData hit_data) {
     Vec3 normal = outside_normal;
     if (vec3_dot(outside_normal, hit_data.hit_point) > 0) // if the end of the ray is inside the hittable
         normal = vec3_mult_n(outside_normal, -1);
-    return normal;
+    return vec3_normalize(normal);
 }
 
 // A²t² - 2At(O-C) + (O-C)² - r² = 0
@@ -38,12 +43,12 @@ double hit_sphere(const Ray ray, const Sphere sphere) {
         return -1;
 }
 
-// get a distance from (0, 0, 0) to the point
+// get n to the point
 // double hit_cube(const Vec3 point, const Cube cube) {
     
 // }
 
-// get a distance from (0, 0, 0) to the point
+// get n to the point
 double hit_hittable(const Ray ray, const Hittable hittable) {
     switch (hittable.hittable_type) {
         case SPHERE: return hit_sphere(ray, hittable.sphere); break;
@@ -63,7 +68,11 @@ HitData get_min_hit_data(const Ray ray) {
             min_hittable_idx = i;
         }
     }
-    // Vec3 min_hit_ray_end = get_ray_end(ray.origin, vec3_sub(ray.end, ray.origin), min_hit);
-    Vec3 hit_point = get_ray_end(ray, min_hit);
-    return (HitData) {hit_point, min_hittable_idx};
+
+    Vec3 real_hit_point = get_ray_end(ray, min_hit);
+    // Vec3 normal = get_hittable_normal((HitData) {real_hit_point, min_hittable_idx});
+    // fix_fisheye(&min_hit, ray, normal);
+    
+    // Vec3 fixed_hit_point = get_ray_end(ray, min_hit);
+    return (HitData) {real_hit_point, min_hittable_idx};
 }

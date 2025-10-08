@@ -1,12 +1,16 @@
 #pragma once
 
-#include "color.h"
+#include "color_rgb.h"
+
+#define MATTE(r, g, b) {.reflection_type = DIFFUSE, .albedo = {(r), (g), (b)}}
+#define MIRROR(r, g, b) {.reflection_type = SPECULAR, .albedo = {(r), (g), (b)}}
 
 typedef enum {
-    MATTE
-} MaterialType;
+    DIFFUSE,
+    SPECULAR
+} MaterialReflectionType;
 
-// typedef struct {
-//     ColorRGB color;
-//     MaterialType type;
-// } Material;
+typedef struct {
+    ColorRGB albedo;
+    MaterialReflectionType reflection_type;
+} Material;

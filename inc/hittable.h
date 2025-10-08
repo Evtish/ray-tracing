@@ -27,6 +27,6 @@ typedef struct {
 typedef struct {
     Sphere sphere;
     // Cube cube;
+    Material material;
     HittableType hittable_type;
-    MaterialType material_type;
 } Hittable;

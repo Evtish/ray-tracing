@@ -37,8 +37,4 @@ Vec3 viewport_get_point_from_pixel(Vec2 u) {
         ),
         vec3_mult_n(pixel_delta_v, u.y)
     );
-    // return get_ray_end(
-    //     get_ray_end(pixel_upper_left, pixel_delta_u, u.x),
-    //     pixel_delta_v, u.y
-    // );
 }
