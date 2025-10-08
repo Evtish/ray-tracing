@@ -1,10 +1,26 @@
 #include "color.h"
 
-#define REFLECTED_COLOR_LOSS_K 0.7
+#define REFLECTED_COLOR_LOSS_K 0.2
 
 ColorRGB color_add(const ColorRGB u, const ColorRGB v) { return (ColorRGB) {u.r + v.r, u.g + v.g, u.b + v.b}; }
 
 ColorRGB color_mult_n(const ColorRGB u, const double n) { return (ColorRGB) {u.r * n, u.g * n, u.b * n}; }
+
+ColorRGB color_correct_gamma(const ColorRGB color) {
+    double r = fmap(color.r, 0, MAX_COLOR_VAL, 0, 1);
+    double g = fmap(color.g, 0, MAX_COLOR_VAL, 0, 1);
+    double b = fmap(color.b, 0, MAX_COLOR_VAL, 0, 1);
+
+    double corr_r = correct_gamma(r);
+    double corr_g = correct_gamma(g);
+    double corr_b = correct_gamma(b);
+
+    return (ColorRGB) {
+        fmap(corr_r, 0, 1, 0, MAX_COLOR_VAL),
+        fmap(corr_g, 0, 1, 0, MAX_COLOR_VAL),
+        fmap(corr_b, 0, 1, 0, MAX_COLOR_VAL)
+    };
+}
 
 ColorRGB fcolor_gradient(
     const double val,
@@ -33,7 +49,7 @@ ColorRGB get_point_color(const Ray ray, const int amount_of_reflections) {
         return color_mult_n(get_point_color(reflected_ray, amount_of_reflections - 1), REFLECTED_COLOR_LOSS_K);
     }
     else {
-        ColorRGB color_a = {255, 255, 255}, color_b = {127, 179, 255}; // a - bottom of the image, b - top
+        ColorRGB color_a = {255, 255, 255}, color_b = {0, 70, 255}; // a - bottom of the image, b - top
         return fcolor_gradient(ray.dir.y, -VIEWPORT_H / 2, VIEWPORT_H / 2, color_a, color_b);
     }
 }

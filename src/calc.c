@@ -1,5 +1,7 @@
 #include "calc.h"
 
+#define GAMMA_CORRECTION_DEGREE 0.45 // = 1/2.2
+
 // limit var to a range low -- high
 double flimit(const double val, const double low, const double high) {
     if (val > high)
@@ -43,4 +45,10 @@ bool finterval_contains(const double val, const double a, const double b) {
 // get a random double from a range low -- high
 double rand_double(const double low, const double high) {
     return fmap(rand(), 0, RAND_MAX, low, high);
+}
+
+double correct_gamma(const double val) {
+    if (val > 0)
+        return pow(val, GAMMA_CORRECTION_DEGREE);
+    return 0;
 }

@@ -15,3 +15,4 @@ typedef struct {
 } ColorRGB;
 
 ColorRGB get_point_color(const Ray ray, const int amount_of_reflections);
+ColorRGB color_correct_gamma(const ColorRGB color);
