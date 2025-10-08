@@ -13,7 +13,7 @@
 #define MAX_HIT DBL_MAX
 
 typedef struct {
-    Ray hit_ray;
+    Vec3 hit_point;
     int hittable_index;
 } HitData;
 

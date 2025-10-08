@@ -2,7 +2,7 @@
 
 #include "vec2.h"
 #include "vec3.h"
-#include "ray.h"
+// #include "ray.h"
 #include "image.h"
 
 #define VIEWPORT_H 2.0

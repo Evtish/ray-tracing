@@ -1,27 +1,10 @@
 #include "color.h"
 
+#define REFLECTED_COLOR_LOSS_K 0.7
+
 ColorRGB color_add(const ColorRGB u, const ColorRGB v) { return (ColorRGB) {u.r + v.r, u.g + v.g, u.b + v.b}; }
 
 ColorRGB color_mult_n(const ColorRGB u, const double n) { return (ColorRGB) {u.r * n, u.g * n, u.b * n}; }
-
-// bool get_hittable_color(const Ray ray, ColorRGB *p_color) {
-//     // static bool was_hit = false;
-//     static int amount_of_reflections = 0;
-
-//     HitData hit_data = get_min_hit_data(ray);
-//     if (hit_data.hittable_index < 0 && amount_of_reflections == 0)
-//         return false;
-//     else if (amount_of_reflections > MAX_AMOUNT_OF_REFLECTIONS) {
-//         *p_color = color_mult_n((ColorRGB) {255, 255, 255}, pow(2, -amount_of_reflections));
-//         amount_of_reflections = 0;
-//         return true;
-//     }
-
-//     amount_of_reflections++;
-//     Vec3 normal = get_hittable_normal(hit_data);
-//     Ray new_ray = {hit_data.hit_ray.end, vec3_rand_unit_hemisphere(normal)};
-//     get_hittable_color(new_ray, p_color);
-// }
 
 ColorRGB fcolor_gradient(
     const double val,
@@ -43,12 +26,14 @@ ColorRGB get_point_color(const Ray ray, const int amount_of_reflections) {
 
     HitData hit_data = get_min_hit_data(ray);
     if (hit_data.hittable_index >= 0) {
-        Vec3 normal = get_hittable_normal(hit_data);
-        Ray new_ray = {hit_data.hit_ray.end, vec3_add(hit_data.hit_ray.end, vec3_add(normal, vec3_rand_unit()))};
-        return color_mult_n(get_point_color(new_ray, amount_of_reflections - 1), 0.5);
+        Vec3 normal = get_hittable_normal(hit_data),
+        reflected_ray_origin = hit_data.hit_point,
+        reflected_ray_dir = vec3_add(normal, vec3_rand_unit());
+        Ray reflected_ray = {reflected_ray_origin, reflected_ray_dir};
+        return color_mult_n(get_point_color(reflected_ray, amount_of_reflections - 1), REFLECTED_COLOR_LOSS_K);
     }
     else {
-        ColorRGB color_a = {255, 255, 255}, color_b = {0, 0, 0}; // a - bottom of the image, b - top
-        return fcolor_gradient(ray.end.x, -VIEWPORT_W / 2, VIEWPORT_W / 2, color_a, color_b);
+        ColorRGB color_a = {255, 255, 255}, color_b = {127, 179, 255}; // a - bottom of the image, b - top
+        return fcolor_gradient(ray.dir.y, -VIEWPORT_H / 2, VIEWPORT_H / 2, color_a, color_b);
     }
 }

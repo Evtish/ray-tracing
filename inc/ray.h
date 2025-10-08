@@ -4,8 +4,8 @@
 #include "vec3.h"
 
 typedef struct {
-    Vec3 start;
-    Vec3 end;
+    Vec3 origin;
+    Vec3 dir;
 } Ray;
 
-Vec3 get_ray_end(const Vec3 start, const Vec3 dir, const double n);
+Vec3 get_ray_end(const Ray ray, const double n);

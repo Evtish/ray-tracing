@@ -16,7 +16,7 @@ void image_render(FILE *const image) {
         indicate_progress_percent(j, IMAGE_H);
         for (unsigned int i = 0; i < IMAGE_W; i++) {
             Vec3 point = viewport_get_point_from_pixel((Vec2) {i, j});
-            ColorRGB color = get_point_color((Ray) {camera_center, point}, MAX_AMOUNT_OF_REFLECTIONS);
+            ColorRGB color = get_point_color((Ray) {camera_center, vec3_sub(point, camera_center)}, MAX_AMOUNT_OF_REFLECTIONS);
             image_write_color(&color, image);
         }
     }
