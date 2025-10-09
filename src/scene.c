@@ -20,7 +20,8 @@ Hittable scene[] = {
         },
         .material = {
             .type = MIRROR,
-            .albedo = {170, 85, 255}
+            .albedo = {170, 85, 255},
+            .fuzz = 0.6
         }
     },
     {
@@ -41,8 +42,9 @@ Hittable scene[] = {
             .radius = 0.5
         },
         .material = {
-            .type = MIRROR,
-            .albedo = {255, 85, 0}
+            .type = METAL,
+            .albedo = {170, 255, 170},
+            .fuzz = 1
         },
     }
 };
