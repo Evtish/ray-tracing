@@ -15,7 +15,7 @@ Vec3 vec3_normalize(const Vec3 u) {
     };
 }
 
-Vec3 vec3_rand_unit(void) {
+Vec3 vec3_rand_unit_circle(void) {
     Vec3 u;
     double u_squared_len;
     do {
@@ -26,7 +26,7 @@ Vec3 vec3_rand_unit(void) {
 }
 
 Vec3 vec3_rand_unit_hemisphere(const Vec3 normal) {
-    Vec3 u = vec3_rand_unit();
+    Vec3 u = vec3_rand_unit_circle();
     if (vec3_dot(u, normal) < 0) // if u isn't in the same hemisphere as the normal
         return vec3_mult_n(u, -1);
     return u;

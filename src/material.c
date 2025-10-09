@@ -12,7 +12,7 @@ bool material_scatter(const MaterialType material_type, const Vec3 reflection_di
 Vec3 get_diffuse_reflection_dir(const Vec3 normal) {
     Vec3 reflected_dir;
     do {
-        reflected_dir = vec3_add(normal, vec3_rand_unit());
+        reflected_dir = vec3_add(normal, vec3_rand_unit_circle());
     } while (vec3_near_zero(reflected_dir));
     return reflected_dir;
 }
@@ -23,7 +23,7 @@ Vec3 get_specular_reflection_dir(const Vec3 dir, const Vec3 normal) {
 }
 
 Vec3 get_fuzzy_offset_dir(const double fuzz) {
-    return vec3_mult_n(vec3_rand_unit(), fuzz);
+    return vec3_mult_n(vec3_rand_unit_circle(), fuzz);
 } 
 
 Vec3 get_reflection_dir(const Vec3 dir, const Vec3 normal, const Material material) {

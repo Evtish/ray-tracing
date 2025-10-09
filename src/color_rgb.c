@@ -24,7 +24,15 @@ ColorRGB color_blend(const ColorRGB a, const ColorRGB b, const double k) {
     );
 }
 
-void color_correct_gamma(ColorRGB *p_color) {
+void large_color_increase(IntColorRGB *const u, const ColorRGB v) {
+    u->r += v.r;
+    u->g += v.g;
+    u->b += v.b;
+}
+
+ColorRGB large_color_div_n(const IntColorRGB u, const double n) { return (ColorRGB) {u.r / n, u.g / n, u.b / n}; }
+
+void color_correct_gamma(ColorRGB *const p_color) {
     double r = fmap(p_color->r, START_COLOR_VAL, MAX_COLOR_VAL, 0, 1);
     double g = fmap(p_color->g, START_COLOR_VAL, MAX_COLOR_VAL, 0, 1);
     double b = fmap(p_color->b, START_COLOR_VAL, MAX_COLOR_VAL, 0, 1);

@@ -20,8 +20,8 @@ double fmap(
     const double out_min,
     const double out_max
 ) {
-    double d1 = in_max - in_min, d2 = out_max - out_min, res = 0.0;
-    res = out_min + (var - in_min) * (d2 / d1);
+    double d1 = in_max - in_min, d2 = out_max - out_min;
+    double res = out_min + (var - in_min) * (d2 / d1);
     
     return flimit(res, out_min, out_max);
 }
@@ -42,9 +42,9 @@ bool finterval_contains(const double val, const double a, const double b) {
     return a <= val && val <= b;
 }
 
-// get a random double from a range low -- high
+// get a random double from a range [low, hight)
 double rand_double(const double low, const double high) {
-    return fmap(rand(), 0, RAND_MAX, low, high);
+    return fmap(rand(), 0, RAND_MAX + 1U, low, high);
 }
 
 double correct_gamma(const double val) {
