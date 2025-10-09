@@ -12,7 +12,9 @@ int main(void) {
     setvbuf(ppm_image, NULL, _IOFBF, 1 << 16); // 64 KiB
 
     image_write_header(ppm_image);
+    // time_t timestamp = time(NULL);
     image_render(ppm_image);
+    // printf("%ld\n", time(NULL) - timestamp);
     
     fclose(ppm_image);
     

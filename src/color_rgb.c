@@ -8,9 +8,9 @@ ColorRGB color_mult_color(const ColorRGB u, const ColorRGB v) {
     int new_b = u.b * v.b;
 
     return (ColorRGB) {
-        fmap(new_r, START_COLOR_VAL, MAX_COLOR_VAL * MAX_COLOR_VAL, START_COLOR_VAL, MAX_COLOR_VAL),
-        fmap(new_g, START_COLOR_VAL, MAX_COLOR_VAL * MAX_COLOR_VAL, START_COLOR_VAL, MAX_COLOR_VAL),
-        fmap(new_b, START_COLOR_VAL, MAX_COLOR_VAL * MAX_COLOR_VAL, START_COLOR_VAL, MAX_COLOR_VAL)
+        fmap(new_r, MIN_COLOR_VAL * MIN_COLOR_VAL, MAX_COLOR_VAL * MAX_COLOR_VAL, MIN_COLOR_VAL, MAX_COLOR_VAL),
+        fmap(new_g, MIN_COLOR_VAL * MIN_COLOR_VAL, MAX_COLOR_VAL * MAX_COLOR_VAL, MIN_COLOR_VAL, MAX_COLOR_VAL),
+        fmap(new_b, MIN_COLOR_VAL * MIN_COLOR_VAL, MAX_COLOR_VAL * MAX_COLOR_VAL, MIN_COLOR_VAL, MAX_COLOR_VAL)
     };
 }
 
@@ -33,17 +33,17 @@ void large_color_increase(IntColorRGB *const u, const ColorRGB v) {
 ColorRGB large_color_div_n(const IntColorRGB u, const double n) { return (ColorRGB) {u.r / n, u.g / n, u.b / n}; }
 
 void color_correct_gamma(ColorRGB *const p_color) {
-    double r = fmap(p_color->r, START_COLOR_VAL, MAX_COLOR_VAL, 0, 1);
-    double g = fmap(p_color->g, START_COLOR_VAL, MAX_COLOR_VAL, 0, 1);
-    double b = fmap(p_color->b, START_COLOR_VAL, MAX_COLOR_VAL, 0, 1);
+    double r = fmap(p_color->r, MIN_COLOR_VAL, MAX_COLOR_VAL, 0, 1);
+    double g = fmap(p_color->g, MIN_COLOR_VAL, MAX_COLOR_VAL, 0, 1);
+    double b = fmap(p_color->b, MIN_COLOR_VAL, MAX_COLOR_VAL, 0, 1);
 
     double corr_r = correct_gamma(r);
     double corr_g = correct_gamma(g);
     double corr_b = correct_gamma(b);
 
     *p_color = (ColorRGB) {
-        fmap(corr_r, 0, 1, START_COLOR_VAL, MAX_COLOR_VAL),
-        fmap(corr_g, 0, 1, START_COLOR_VAL, MAX_COLOR_VAL),
-        fmap(corr_b, 0, 1, START_COLOR_VAL, MAX_COLOR_VAL)
+        fmap(corr_r, 0, 1, MIN_COLOR_VAL, MAX_COLOR_VAL),
+        fmap(corr_g, 0, 1, MIN_COLOR_VAL, MAX_COLOR_VAL),
+        fmap(corr_b, 0, 1, MIN_COLOR_VAL, MAX_COLOR_VAL)
     };
 }

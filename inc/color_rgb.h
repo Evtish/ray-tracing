@@ -2,7 +2,7 @@
 
 #include "vec3.h"
 
-#define START_COLOR_VAL 0
+#define MIN_COLOR_VAL 0
 #define MAX_COLOR_VAL 255
 
 typedef struct {
