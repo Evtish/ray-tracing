@@ -29,15 +29,17 @@ ColorRGB get_point_color(const Ray ray, const int amount_of_reflections) {
 
     if (hittable_idx >= 0) {
         Material material = scene[hittable_idx].material;
-        Vec3 normal = get_hittable_normal(hit_data, ray.dir);
-        Vec3 reflected_ray_origin = vec3_add(hit_data.hit_point, vec3_mult_n(normal, REFLECTED_RAY_OFFSET)); // raise the point slightly above the surface to avoid floating point errors
-        Vec3 reflected_ray_dir = get_reflection_dir(ray.dir, normal, material);
-    
-        if (!material_scatter(material.type, reflected_ray_dir, normal)) // if ray is absorbed into the material
+        Vec3 reflefracted_ray_dir = reflefraction_get_dir(ray.dir, hit_data);
+        if (!material_scatter(material.type, reflefracted_ray_dir, hit_data.normal)) // if ray is absorbed into the material
             return COLOR_BLACK;
 
-        Ray reflected_ray = {reflected_ray_origin, reflected_ray_dir};
-        return color_mult_color(get_point_color(reflected_ray, amount_of_reflections - 1), material.albedo);
+        Vec3 reflefracted_ray_origin = vec3_add(hit_data.hit_point, vec3_mult_n(hit_data.normal, REFLECTED_RAY_OFFSET)); // raise the point slightly above the surface to avoid floating point errors
+        Ray reflefracted_ray = {reflefracted_ray_origin, reflefracted_ray_dir};
+
+        ColorRGB clean_new_color = get_point_color(reflefracted_ray, amount_of_reflections - 1);
+        if (material_add_albedo(material.type))
+            return color_mult_color(clean_new_color, material.albedo);
+        return clean_new_color;
     }
 
     else return background_gradient(ray.dir, VERTICAL);

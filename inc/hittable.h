@@ -30,3 +30,10 @@ typedef struct {
     Material material;
     HittableType hittable_type;
 } Hittable;
+
+typedef struct {
+    Vec3 hit_point;
+    Vec3 normal;
+    int hittable_index;
+    bool inside_object;
+} HitData;
