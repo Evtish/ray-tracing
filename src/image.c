@@ -15,7 +15,7 @@ void image_render(FILE *const image) {
     for (; j < IMAGE_H; j++) {
         indicate_progress_percent(j, IMAGE_H);
         for (unsigned int i = 0; i < IMAGE_W; i++) {
-            ColorRGB color = get_anti_aliased_pixel_color((Vec2) {i, j}, AMOUNT_OF_HITTABLES);
+            ColorRGB color = get_anti_aliased_pixel_color((Vec2) {i, j}, MAX_AMOUNT_OF_REFLECTIONS);
             color_correct_gamma(&color);
             image_write_color(&color, image);
         }
