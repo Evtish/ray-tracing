@@ -2,6 +2,6 @@
 
 #include "hittable.h"
 
-#define AMOUNT_OF_HITTABLES 4
+#define AMOUNT_OF_HITTABLES 5
 
 extern Hittable scene[];

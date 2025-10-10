@@ -1,6 +1,7 @@
 #include "scene.h"
 
 Hittable scene[] = {
+    // ground
     {
         .hittable_type = SPHERE,
         .sphere = {
@@ -12,6 +13,8 @@ Hittable scene[] = {
             .albedo = {170, 255, 0}
         }
     },
+
+    // left (outer glass)
     {
         .hittable_type = SPHERE,
         .sphere = {
@@ -20,13 +23,28 @@ Hittable scene[] = {
         },
         .material = {
             .type = DIELECTRIC,
-            .refractive_index = AIR_REFRACTIVE_INDEX
+            .relative_refraction_index = GLASS_REFRACTIVE_INDEX / ENVIRONMENT_REFRACTIVE_INDEX
         }
     },
+
+    // left (inner air)
     {
         .hittable_type = SPHERE,
         .sphere = {
-            .center = {0, -0.5, -1.2},
+            .center = {-1, 0, -1},
+            .radius = 0.4
+        },
+        .material = {
+            .type = DIELECTRIC,
+            .relative_refraction_index = AIR_REFRACTIVE_INDEX / GLASS_REFRACTIVE_INDEX
+        }
+    },
+
+    // center
+    {
+        .hittable_type = SPHERE,
+        .sphere = {
+            .center = {0, 0, -1.2},
             .radius = 0.5
         },
         .material = {
@@ -34,6 +52,8 @@ Hittable scene[] = {
             .albedo = {26, 51, 128}
         },
     },
+
+    // right
     {
         .hittable_type = SPHERE,
         .sphere = {

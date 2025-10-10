@@ -50,9 +50,9 @@ double hit_sphere(const Ray ray, const Sphere sphere) {
 // }
 
 // get n to the point
-double hit_hittable(const Ray ray, const Hittable hittable) {
-    switch (hittable.hittable_type) {
-        case SPHERE: return hit_sphere(ray, hittable.sphere); break;
+double hit_hittable(const Ray ray, const Hittable *const hittable) {
+    switch (hittable->hittable_type) {
+        case SPHERE: return hit_sphere(ray, hittable->sphere); break;
         // case CUBE: return hit_cube(point, hittable.data.cube); break;
         default: return -1; break;
     }
@@ -63,7 +63,7 @@ HitData get_min_hit_data(const Ray ray) {
     double min_hit = MAX_HIT;
     int min_hittable_idx = -1;
     for (int i = 0; i < AMOUNT_OF_HITTABLES; i++) {
-        double hit = hit_hittable(ray, scene[i]);
+        double hit = hit_hittable(ray, &scene[i]);
         if (hit > 0 && hit < min_hit) { // if there is a hit that less than the previous one
             min_hit = hit;
             min_hittable_idx = i;

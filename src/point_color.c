@@ -29,7 +29,7 @@ ColorRGB get_point_color(const Ray ray, const int amount_of_reflections) {
 
     if (hittable_idx >= 0) {
         Material material = scene[hittable_idx].material;
-        Vec3 reflefracted_ray_dir = reflefraction_get_dir(ray.dir, hit_data);
+        Vec3 reflefracted_ray_dir = reflefraction_get_dir(ray.dir, &hit_data);
         if (!material_scatter(material.type, reflefracted_ray_dir, hit_data.normal)) // if ray is absorbed into the material
             return COLOR_BLACK;
 

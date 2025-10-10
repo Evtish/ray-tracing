@@ -1,7 +1,5 @@
 #include "reflefraction.h"
 
-#define ENVIRONMENT_REFRACTIVE_INDEX WATER_REFRACTIVE_INDEX
-
 Vec3 get_diffuse_reflection_dir(const Vec3 normal) {
     Vec3 reflected_dir;
     do {
@@ -19,8 +17,15 @@ Vec3 get_fuzzy_offset(const double fuzz) {
     return vec3_mult_n(vec3_rand_unit_circle(), fuzz);
 }
 
-Vec3 get_refraction_dir(const Vec3 dir, const Vec3 normal, const double rri) {
-    double cos_theta = vec3_dot(normal, vec3_mult_n(dir, -1));
+double reflectance(const double cos_theta, const double rri) {
+    // use Schlick's approximation
+    double r0 = (ENVIRONMENT_REFRACTIVE_INDEX - rri) / (ENVIRONMENT_REFRACTIVE_INDEX + rri);
+    r0 *= r0;
+    double r_theta = r0 + (1 - r0) * pow((1 - cos_theta), 5);
+    return r_theta;
+}
+
+Vec3 get_refraction_dir(const Vec3 dir, const Vec3 normal, const double cos_theta, const double rri) {
     // R'⟂ = η * (R + n * cosθ)
     Vec3 refracted_dir_perp = vec3_mult_n(vec3_add(dir, vec3_mult_n(normal, cos_theta)), rri);
     // R'∥ = n * (-√(1 - |R'⟂|²))
@@ -34,29 +39,28 @@ Vec3 get_refraction_dir(const Vec3 dir, const Vec3 normal, const double rri) {
     return vec3_normalize(vec3_add(refracted_dir_perp, refracted_dir_paral));
 }
 
-Vec3 reflefraction_get_dir(const Vec3 dir, const HitData hit_data) {
-    Material material = scene[hit_data.hittable_index].material;
-    Vec3 normal = hit_data.normal;
-    double relative_refraction_index, cos_theta, sin_theta, sin_theta_prime;
+Vec3 reflefraction_get_dir(const Vec3 dir, const HitData *const hit_data) {
+    Material material = scene[hit_data->hittable_index].material;
+    Vec3 normal = hit_data->normal;
+    double rri = material.relative_refraction_index;
+    double cos_theta, sin_theta, sin_theta_prime;
 
     switch (material.type) {
         default:
         case MATTE: return get_diffuse_reflection_dir(normal); break;
         case MIRROR: return get_specular_reflection_dir(dir, normal); break;
-        case CONDUCTOR: return vec3_normalize(vec3_add(get_specular_reflection_dir(dir, normal), get_fuzzy_offset(material.fuzz)));
+        case CONDUCTOR: return vec3_normalize(vec3_add(get_specular_reflection_dir(dir, normal), get_fuzzy_offset(material.fuzz))); break;
         case DIELECTRIC:
-            if (hit_data.inside_object)
-                relative_refraction_index = material.refractive_index / ENVIRONMENT_REFRACTIVE_INDEX;
-            else
-                relative_refraction_index = ENVIRONMENT_REFRACTIVE_INDEX / material.refractive_index;
-
+            if (!hit_data->inside_object)
+                rri = 1 / rri;
+            
             cos_theta = vec3_dot(normal, vec3_mult_n(dir, -1));
             sin_theta = sqrt(fabs(1 - cos_theta * cos_theta));
-            sin_theta_prime = relative_refraction_index * sin_theta;
+            sin_theta_prime = rri * sin_theta;
 
-            if (fabs(sin_theta_prime) > 1) // if there is no such angle
+            if (fabs(sin_theta_prime) > 1 || reflectance(cos_theta, rri) > rand_double(0, 1)) // if there is no such angle
                 return get_specular_reflection_dir(dir, normal); // total internal reflection
-            return get_refraction_dir(dir, normal, relative_refraction_index);
+            return get_refraction_dir(dir, normal, cos_theta, rri);
         break;
     }
 }

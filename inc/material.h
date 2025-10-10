@@ -5,6 +5,9 @@
 #define AIR_REFRACTIVE_INDEX 1.000273
 #define WATER_REFRACTIVE_INDEX 1.33
 #define GLASS_REFRACTIVE_INDEX 1.52
+#define DIAMOND_REFRACTIVE_INDEX 2.417
+
+#define ENVIRONMENT_REFRACTIVE_INDEX AIR_REFRACTIVE_INDEX
 
 typedef enum {
     MATTE,     // albedo
@@ -15,7 +18,7 @@ typedef enum {
 
 typedef struct {
     double fuzz;
-    double refractive_index;
+    double relative_refraction_index;
     ColorRGB albedo;
     MaterialType type;
 } Material;
