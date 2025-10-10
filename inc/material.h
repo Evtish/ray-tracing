@@ -3,6 +3,7 @@
 #include "color_rgb.h"
 
 #define AIR_REFRACTIVE_INDEX 1.000273
+#define WATER_REFRACTIVE_INDEX 1.33
 #define GLASS_REFRACTIVE_INDEX 1.52
 
 typedef enum {

@@ -11,16 +11,15 @@ bool get_hittable_normal(Vec3 *const p_normal, const int hittable_index, const V
     switch (hittable.hittable_type) {
         case SPHERE:
             hittable_center = hittable.sphere.center;
+        break;
         // default: return (Vec3) {0, 0, 0};
     }
 
     Vec3 outside_normal = vec3_normalize(vec3_sub(hit_point, hittable_center));
-    if (vec3_dot(outside_normal, ray_dir) > 0) { // if the end of the ray is inside the hittable
-        *p_normal = vec3_mult_n(outside_normal, -1);
-        return true;
-    }
-    *p_normal = outside_normal;
-    return false;
+    bool inside_object = (vec3_dot(outside_normal, ray_dir) > 0);
+
+    *p_normal = inside_object ? vec3_mult_n(outside_normal, -1) : outside_normal;
+    return inside_object;
 }
 
 // A²t² - 2At(O-C) + (O-C)² - r² = 0

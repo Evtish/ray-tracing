@@ -2,6 +2,8 @@
 
 #include "calc.h"
 
+#define vec3_squared_len(u) vec3_dot((u), (u))
+
 typedef struct {
     double x;
     double y;

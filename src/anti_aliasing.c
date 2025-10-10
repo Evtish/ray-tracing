@@ -12,7 +12,7 @@ ColorRGB get_anti_aliased_pixel_color(const Vec2 pixel, const int amount_of_refl
         for (int sample = 0; sample < SAMPLES_PER_PIXEL; sample++) {
             Vec2 offset = vec2_rand_unit_square();
             Vec3 point = viewport_get_point_from_pixel(vec2_add(pixel, offset));
-            Ray ray = {camera_center, vec3_sub(point, camera_center)};
+            Ray ray = {camera_center, vec3_normalize(vec3_sub(point, camera_center))};
             large_color_increase(&large_color, get_point_color(ray, amount_of_reflections));
         }
         return large_color_div_n(large_color, SAMPLES_PER_PIXEL);
@@ -24,7 +24,7 @@ ColorRGB get_anti_aliased_pixel_color(const Vec2 pixel, const int amount_of_refl
             double blend_k = (double) sample / (sample + 1);
             Vec2 offset = vec2_rand_unit_square();
             Vec3 point = viewport_get_point_from_pixel(vec2_add(pixel, offset));
-            Ray ray = {camera_center, vec3_sub(point, camera_center)};
+            Ray ray = {camera_center, vec3_normalize(vec3_sub(point, camera_center))};
             ColorRGB sample_color = get_point_color(ray, amount_of_reflections);
             Vec3 mappped_sample_color = {
                 fmap(sample_color.r, MIN_COLOR_VAL, MAX_COLOR_VAL, 0, 1),
@@ -42,7 +42,7 @@ ColorRGB get_anti_aliased_pixel_color(const Vec2 pixel, const int amount_of_refl
     // 1.5 seconds (1080p)
     #else
         Vec3 point = viewport_get_point_from_pixel(pixel);
-        Ray ray = {camera_center, vec3_sub(point, camera_center)};
+        Ray ray = {camera_center, vec3_normalize(vec3_sub(point, camera_center))};
         return get_point_color(ray, amount_of_reflections);
     #endif
 }

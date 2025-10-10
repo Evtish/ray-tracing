@@ -1,7 +1,5 @@
 #include "vec3.h"
 
-#define vec3_squared_len(u) vec3_dot((u), (u))
-
 double vec3_dot(const Vec3 u, const Vec3 v) { return u.x * v.x + u.y * v.y + u.z * v.z; }
 
 double vec3_len(const Vec3 u) { return sqrt(u.x * u.x + u.y * u.y + u.z * u.z); }

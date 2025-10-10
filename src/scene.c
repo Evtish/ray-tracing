@@ -20,7 +20,7 @@ Hittable scene[] = {
         },
         .material = {
             .type = DIELECTRIC,
-            .refractive_index = GLASS_REFRACTIVE_INDEX
+            .refractive_index = AIR_REFRACTIVE_INDEX
         }
     },
     {
