@@ -3,7 +3,7 @@
 // #define ARITH_AVG
 #define BLEND_AVG
 
-#define SAMPLES_PER_PIXEL 50
+#define SAMPLES_PER_PIXEL 200
 
 ColorRGB get_anti_aliased_pixel_color(const Vec2 pixel, const int amount_of_reflections) {
     // 95 seconds (1080p, X100)

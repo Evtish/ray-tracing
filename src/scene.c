@@ -10,7 +10,7 @@ Hittable scene[] = {
         },
         .material = {
             .type = MATTE,
-            .albedo = {170, 255, 0}
+            .albedo = {255, 170, 255}
         }
     },
 
@@ -49,7 +49,7 @@ Hittable scene[] = {
         },
         .material = {
             .type = MATTE,
-            .albedo = {26, 51, 128}
+            .albedo = {128, 26, 51}
         },
     },
 
@@ -63,7 +63,66 @@ Hittable scene[] = {
         .material = {
             .type = CONDUCTOR,
             .albedo = {170, 255, 170},
-            .fuzz = 1
+            .fuzz = 0.8
+        },
+    },
+
+    {
+        .hittable_type = SPHERE,
+        .sphere = {
+            .center = {0.6, 0.3, -0.8},
+            .radius = 0.15
+        },
+        .material = {
+            .type = CONDUCTOR,
+            .albedo = {255, 170, 0},
+            .fuzz = 0.6
+        },
+    },
+
+    {
+        .hittable_type = SPHERE,
+        .sphere = {
+            .center = {-0.5, 0.6, -1},
+            .radius = 0.2
+        },
+        .material = {
+            .type = MIRROR
+        },
+    },
+
+    {
+        .hittable_type = SPHERE,
+        .sphere = {
+            .center = {-1, 0, -1.5},
+            .radius = 0.5
+        },
+        .material = {
+            .type = CONDUCTOR,
+            .albedo = {0, 190, 130},
+            .fuzz = 0
+        },
+    },
+
+    {
+        .hittable_type = SPHERE,
+        .sphere = {
+            .center = {0, -0.3, -0.5},
+            .radius = 0.1
+        },
+        .material = {
+            .type = MIRROR
+        },
+    },
+
+    {
+        .hittable_type = SPHERE,
+        .sphere = {
+            .center = {0.201, -0.3, -0.5},
+            .radius = 0.1
+        },
+        .material = {
+            .type = MIRROR
         },
     }
 };

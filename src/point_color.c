@@ -3,7 +3,7 @@
 #define REFLECTED_RAY_OFFSET 1e-5
 
 #define COLOR_BLACK ((ColorRGB) {0, 0, 0})
-#define GRADIENT_COLOR_A ((ColorRGB) {128, 179, 255})
+#define GRADIENT_COLOR_A ((ColorRGB) {0, 70, 255})
 #define GRADIENT_COLOR_B ((ColorRGB) {255, 255, 255})
 
 typedef enum {
