@@ -1,3 +1,5 @@
+![Final render](./images/step-by-step-examples/png/14-final.png)
+
 # Build and run
 
 ### Compile the program, render the image and open it
@@ -23,3 +25,7 @@ You can modify the following parameters in the source code:
 - `ANTI_ALIASING_MODE`, `SAMPLES_PER_PIXEL` － in [`src/anti_aliasing.c`](./src/anti_aliasing.c)
 - `scene[]` － in [`src/scene.c`](./src/scene.c)
 - `AMOUNT_OF_HITTABLES` － in [`inc/scene.h`](./inc/scene.h)
+
+# Sources
+- [Ray Tracing in One Weekend](https://raytracing.github.io/books/RayTracingInOneWeekend.html)
+- [PPM Format Specification](https://netpbm.sourceforge.net/doc/ppm.html)

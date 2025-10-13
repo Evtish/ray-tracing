@@ -1,6 +1,6 @@
 .vscode/
 build/
 image.ppm
-image/incorrect
-image/misc
+images/incorrect/
+images/misc/
 TODO.md
