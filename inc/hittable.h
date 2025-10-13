@@ -4,9 +4,15 @@
 #include "material.h"
 
 typedef enum {
-    SPHERE,
-    // CUBE
+    OBJ_SPHERE,
+    // OBJ_CUBE
 } HittableType;
+
+typedef struct {
+    Vec3 center;
+    double radius;
+    // double a;
+} AbstractHittable;
 
 typedef struct {
     Vec3 center;
@@ -18,17 +24,16 @@ typedef struct {
 //     double a;
 // } Cube;
 
-// TODO: maybe remove the union and use Sphere and Cube directly
-// typedef union {
-//     Sphere sphere;
-//     // Cube cube;
-// } HittableData;
-
-typedef struct {
+typedef union {
+    AbstractHittable abstract;
     Sphere sphere;
     // Cube cube;
+} HittableObj;
+
+typedef struct {
+    HittableObj obj;
     Material material;
-    HittableType hittable_type;
+    HittableType type;
 } Hittable;
 
 typedef struct {

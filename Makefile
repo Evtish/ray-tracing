@@ -20,7 +20,7 @@ LDFLAGS := -lm
 
 IMAGE_VIEWER := xdg-open
 
-all: $(IMAGE_FILE)
+all: $(EXEC_FILE)
 
 $(BUILD_DIR) $(IMAGE_DIR):
 	mkdir -pv $@
@@ -38,15 +38,18 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%$(SOURCE_EXTENSION)
 $(EXEC_FILE): $(OBJECT_FILES)
 	$(CC) $^ $(LDFLAGS) -o $@
 
-# render an image
 $(IMAGE_FILE): $(EXEC_FILE) | $(IMAGE_DIR)
 	./$(EXEC_FILE)
 
+# render the image
+render: $(IMAGE_FILE)
+
+# open the image
 open: $(IMAGE_FILE)
 	$(IMAGE_VIEWER) $(IMAGE_FILE)
 
-# remove build files
+# remove build files and the image
 clean:
-	rm -rf $(BUILD_DIR)
+	rm -rf $(BUILD_DIR) $(IMAGE_FILE)
 
-.PHONY: all open clean
+.PHONY: all render open clean

@@ -7,15 +7,16 @@
 #define GRADIENT_COLOR_B ((ColorRGB) {255, 255, 255})
 
 typedef enum {
-    VERTICAL,
-    HORIZONTAL
+    GRAD_VERTICAL,
+    GRAD_HORIZONTAL
 } GradientType;
 
 ColorRGB background_gradient(const Vec3 ray_dir, const GradientType gradient_type) {
     double blend_k = 0;
     switch (gradient_type) {
-        case VERTICAL: blend_k = fmap(ray_dir.y, -VIEWPORT_H / 2, VIEWPORT_H / 2, 0, 1); break;
-        case HORIZONTAL: blend_k = fmap(ray_dir.x, -VIEWPORT_W / 2, VIEWPORT_W / 2, 0, 1); break;
+        default:
+        case GRAD_VERTICAL: blend_k = fmap(ray_dir.y, -VIEWPORT_H / 2, VIEWPORT_H / 2, 0, 1); break;
+        case GRAD_HORIZONTAL: blend_k = fmap(ray_dir.x, -VIEWPORT_W / 2, VIEWPORT_W / 2, 0, 1); break;
     }
     return color_blend(GRADIENT_COLOR_A, GRADIENT_COLOR_B, blend_k);
 }
@@ -30,7 +31,7 @@ ColorRGB get_point_color(const Ray ray, const int amount_of_reflections) {
     if (hittable_idx >= 0) {
         Material material = scene[hittable_idx].material;
         Vec3 reflefracted_ray_dir = reflefraction_get_dir(ray.dir, &hit_data);
-        if (!material_scatter(material.type, reflefracted_ray_dir, hit_data.normal)) // if ray is absorbed into the material
+        if (!material_scatter(material.type, reflefracted_ray_dir, hit_data.normal)) // if the ray is absorbed into the material
             return COLOR_BLACK;
 
         Vec3 reflefracted_ray_origin = vec3_add(hit_data.hit_point, vec3_mult_n(hit_data.normal, REFLECTED_RAY_OFFSET)); // raise the point slightly above the surface to avoid floating point errors
@@ -42,5 +43,5 @@ ColorRGB get_point_color(const Ray ray, const int amount_of_reflections) {
         return clean_new_color;
     }
 
-    else return background_gradient(ray.dir, VERTICAL);
+    else return background_gradient(ray.dir, GRAD_VERTICAL);
 }

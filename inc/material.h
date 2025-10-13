@@ -9,11 +9,12 @@
 
 #define ENVIRONMENT_REFRACTIVE_INDEX AIR_REFRACTIVE_INDEX
 
+// the parameters for each material are listed in the comments opposite
 typedef enum {
-    MATTE,     // albedo
-    MIRROR,    // ---
-    CONDUCTOR, // fuzz, albedo
-    DIELECTRIC // refractive index, albedo
+    MAT_MATTE,     // albedo
+    MAT_MIRROR,    // ---
+    MAT_CONDUCTOR, // fuzz, albedo
+    MAT_DIELECTRIC // refractive index, albedo
 } MaterialType;
 
 typedef struct {
