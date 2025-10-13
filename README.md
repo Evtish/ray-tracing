@@ -3,7 +3,7 @@
 ### Compile the program, render the image and open it
 ```make open```
 
-Or open the rendered file manually from the [`images`](./images/) directory (it will be created after running `make render`).
+Or open the rendered file manually from the [`images`](./images/) directory (if you've deleted it, it will be recreated after running `make render`).
 
 ### Compile the program and render the image
 ```make render```

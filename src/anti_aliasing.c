@@ -5,9 +5,9 @@
 1. arithmetic mean of colors
 2. blend colors - preferred mode. slightly slower, but slightly more accurate than the previous one
 */
-#define ANTI_ALIASING_MODE 0
+#define ANTI_ALIASING_MODE 2
 
-#define SAMPLES_PER_PIXEL 200
+#define SAMPLES_PER_PIXEL 50
 
 ColorRGB get_anti_aliased_pixel_color(const Vec2 pixel, const int amount_of_reflections) {
     #if ANTI_ALIASING_MODE == 0
