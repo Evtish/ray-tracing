@@ -8,7 +8,7 @@ Or open the rendered file manually from the [`images`](./images/) directory (it 
 ### Compile the program and render the image
 ```make render```
 
-Or run the executable file manually from the [`build`](file://./build/) directory (it will be created after running `make`).
+Or run the executable file manually from the [`build`](./build/) directory (it will be created after running `make`).
 
 ### Compile the program
 ```make```
@@ -18,8 +18,8 @@ Or run the executable file manually from the [`build`](file://./build/) director
 
 # Settings
 You can modify the following parameters in the source code:
-- `IMAGE_H` － in [`inc/image.h`](file://./inc/image.h)
-- `BENCHMARK` － in [`src/main.c`](file://./src/main.c)
-- `ANTI_ALIASING_MODE`, `SAMPLES_PER_PIXEL` － in [`src/anti_aliasing.c`](file://./src/anti_aliasing.c)
-- `scene[]` － in [`src/scene.c`](file://./src/scene.c)
-- `AMOUNT_OF_HITTABLES` － in [`inc/scene.h`](file://./inc/scene.h)
+- `IMAGE_H` － in [`inc/image.h`](./inc/image.h)
+- `BENCHMARK` － in [`src/main.c`](./src/main.c)
+- `ANTI_ALIASING_MODE`, `SAMPLES_PER_PIXEL` － in [`src/anti_aliasing.c`](./src/anti_aliasing.c)
+- `scene[]` － in [`src/scene.c`](./src/scene.c)
+- `AMOUNT_OF_HITTABLES` － in [`inc/scene.h`](./inc/scene.h)
